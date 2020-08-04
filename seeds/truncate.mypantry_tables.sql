@@ -1,0 +1,5 @@
+TRUNCATE 
+items,
+item_type,
+users
+RESTART IDENTITY CASCADE;
