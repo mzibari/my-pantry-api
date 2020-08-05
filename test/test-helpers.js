@@ -3,14 +3,14 @@ function makeUsersArray() {
         {
             username: "mahmood",
             email: "mahmood@email.com",
-            password: "password1",
+            user_password: "password1",
             id: 1,
         },
         {
             username: "falafel",
             email: "falafel@email.com",
-            password: "password2",
-            id: "2",
+            user_password: "password2",
+            id: 2,
         },
     ]
 }
