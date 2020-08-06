@@ -22,8 +22,23 @@ usersRouter
     .route('/:user_id')
     /* .all(requireAuth) */
     .all(checkUserExists)
-    .get((req, res) =>{
+    .get((req, res) => {
         res.json(res.user)
+    })
+
+usersRouter
+    .route('/:user_id/items')
+    .all(checkUserExists)
+    /* .all(requireAuth) */
+    .get((req, res, next) => {
+        UsersService.getItemsPerUser(
+            req.app.get('db'),
+            req.params.user_id
+        )
+            .then(items => {
+                res.json(items)
+            })
+            .catch(next)
     })
 
 

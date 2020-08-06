@@ -5,7 +5,7 @@ const helpers = require('./test-helpers')
 describe('Users Endpoints', function () {
     let db
 
-    const { testUsers } = helpers.makeMyPantryFixtures()
+    const { testUsers, testItemType, testItems } = helpers.makeMyPantryFixtures()
 
     before('make knex instance', () => {
         db = knex({
@@ -16,11 +16,10 @@ describe('Users Endpoints', function () {
     })
 
     after('disconnect from db', () => db.destroy())
-
     before('cleanup', () => helpers.cleanTables(db))
-
     afterEach('cleanup', () => helpers.cleanTables(db))
 
+    //GET /api/users endpoint ------------------------------------------
     describe(`GET /api/users`, () => {
         context(`Given no users`, () => {
             it(`responds with 200 and an empty list`, () => {
@@ -47,6 +46,8 @@ describe('Users Endpoints', function () {
 
     })
 
+
+    //GET /api/users/:user_id ----------------------------------------
     describe(`GET /api/users/:user_id`, () => {
         context(`Given no users`, () => {
             it(`responds with 404`, () => {
@@ -57,7 +58,7 @@ describe('Users Endpoints', function () {
             })
         })
 
-        context('Given there are users in the database', () => {
+        context('Given there are users in the database', () => { 
             beforeEach('insert users', () =>
                 helpers.seedMyPantryTables(
                     db,
@@ -74,6 +75,39 @@ describe('Users Endpoints', function () {
                     .expect(200, expectedUser)
             })
         })
-    })
+    }) 
+
+    describe(`GET /api/users/:user_id/items`, () => {
+        context(`Given no users`, () => {
+          it(`responds with 404`, () => {
+            const userId = 123456
+            return supertest(app)
+              .get(`/api/users/${userId}/items`)
+              .expect(404, { error: `User doesn't exist` })
+          })
+        })
+    
+        context('Given there are items for user in the database', () => {
+          beforeEach('insert users', () =>
+            helpers.seedMyPantryTables(
+              db,
+              testUsers,
+              testItemType,
+              testItems,
+            )
+          )
+    
+          it('responds with 200 and the specified items', () => {
+            const userId = 1
+            const expectedItems = helpers.makeExpectedItems(
+              testUsers, testItemType, userId, testItems
+            )
+    
+            return supertest(app)
+              .get(`/api/users/${userId}/items`)
+              .expect(200, expectedItems)
+          })
+        })
+      })
 
 })
