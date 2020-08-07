@@ -37,8 +37,10 @@ usersRouter
             req.app.get('db'),
             userToUpdate
         )
-            .then(() => {
-                res.status(204).end()
+            .then(user => {
+                res.status(201)
+                    .location(path.posix.join(req.originalUrl + `/${user.id}`))
+                    .json(user)
             })
             .catch(next)
     })
