@@ -1,6 +1,7 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
+const supertest = require('supertest')
 
 describe('Users Endpoints', function () {
     let db
@@ -134,6 +135,43 @@ describe('Users Endpoints', function () {
                         .get(`/api/users/${postRes.body.id}`)
                         .expect(postRes.body)
                 )
+        })
+
+    })
+    describe(`POST /api/users/:user_id/items`, () => {
+        it(`creates an item, responding with 201 and the new item`, function () {
+            this.retries(3)
+            const testUser = testUsers[0]
+            const itemType = testItemType[0]
+            const newItem = {
+                item_name: "Brocoli",
+                quantity: 3,
+                type: itemType.id,
+                expiration: "march-05-2020"
+            }
+            return supertest(app)
+                .post('/api/users')
+                .send(testUser)
+                .then(() => {
+                    supertest(app)
+                        .post(`/api/users/${1}/items`)
+                        .send(newItem)
+                        .expect(201)
+                        .expect(res => {
+                            expect(res.body.item_name).to.eql(newItem.item_name)
+                            expect(res.body.quantity).to.eql(newItem.quantity)
+                            expect(res.body.type).to.eql(newItem.type)
+                            expect(res.body.expiration).to.eql(newItem.expiration)
+                            expect(res.body).to.have.property('id')
+                            expect(res.headers.location).to.eql(`/api/users/${1}/items/${res.body.id}`)
+                        })
+                        .then(postRes =>
+                            supertest(app)
+                                .get(`/api/users/${1}/items/${postRes.body.id}`)
+                                .expect(postRes.body)
+                        )
+                })
+
         })
 
     })
