@@ -7,7 +7,7 @@ const path = require('path')
 const { requireAuth } = require('../middleware/basic-auth')
 
 
-
+//GET/users endpoint, get all users
 usersRouter
     .route('/')
     .get((req, res, next) => {
@@ -19,6 +19,7 @@ usersRouter
             })
             .catch(next)
     })
+    //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
         const { username, email, user_password } = req.body
         if (!username || !email || !user_password) {
@@ -28,14 +29,14 @@ usersRouter
                 }
             })
         }
-        const userToUpdate = {
+        const userToAdd = {
             username,
             email,
             user_password,
         }
         UsersService.addUser(
             req.app.get('db'),
-            userToUpdate
+            userToAdd
         )
             .then(user => {
                 res.status(201)
@@ -45,6 +46,7 @@ usersRouter
             .catch(next)
     })
 
+//GET/users/user_id endpoint, get user
 usersRouter
     .route('/:user_id')
     /* .all(requireAuth) */
@@ -53,6 +55,7 @@ usersRouter
         res.json(res.user)
     })
 
+    //DELETE/users/user_id endpoint, delete user
     .delete((req, res, next) => {
         UsersService.deleteUser(
             req.app.get('db'),
@@ -64,6 +67,7 @@ usersRouter
             .catch(next)
     })
 
+//GET/users/user_id/items endpoint, get all items for user
 usersRouter
     .route('/:user_id/items')
     .all(checkUserExists)
@@ -78,10 +82,35 @@ usersRouter
             })
             .catch(next)
     })
-
-
-
-
+    .post(jsonParser, (req, res, next) => {
+        const { item_name, quantity, item_type, expiration } = req.body
+        if (!item_name || !quantity || !item_type || !expiration) {
+            return res.status(400).json({
+                error: {
+                    message: `Request body must contain item_name, quantity, item_type, and expiration`
+                }
+            })
+        }
+        const usrid = req.params.user_id
+        console.log(usrid)
+        const itemToAdd = {
+            usrid,
+            item_name,
+            quantity,
+            item_type,
+            expiration
+        }
+        UsersService.addItem(
+            req.app.get('db'),
+            itemToAdd
+        )
+            .then(item => {
+                res.status(201)
+                    .location(path.posix.join(req.originalUrl + `/${item.id}`))
+                    .json(item)
+            })
+            .catch(next)
+    })
 
 
 async function checkUserExists(req, res, next) {
