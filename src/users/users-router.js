@@ -6,6 +6,8 @@ const xss = require('xss')
 const path = require('path')
 const { requireAuth } = require('../middleware/basic-auth')
 
+
+
 usersRouter
     .route('/')
     .get((req, res, next) => {
@@ -17,6 +19,29 @@ usersRouter
             })
             .catch(next)
     })
+    .post(jsonParser, (req, res, next) => {
+        const { username, email, user_password } = req.body
+        if (!username || !email || !user_password) {
+            return res.status(400).json({
+                error: {
+                    message: `Request body must contain username, email, and password`
+                }
+            })
+        }
+        const userToUpdate = {
+            username,
+            email,
+            user_password,
+        }
+        UsersService.addUser(
+            req.app.get('db'),
+            userToUpdate
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
 
 usersRouter
     .route('/:user_id')
@@ -24,6 +49,17 @@ usersRouter
     .all(checkUserExists)
     .get((req, res) => {
         res.json(res.user)
+    })
+
+    .delete((req, res, next) => {
+        UsersService.deleteUser(
+            req.app.get('db'),
+            req.params.user_id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
 
 usersRouter
@@ -40,6 +76,9 @@ usersRouter
             })
             .catch(next)
     })
+
+
+
 
 
 

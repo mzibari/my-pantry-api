@@ -77,6 +77,7 @@ describe('Users Endpoints', function () {
         })
     }) 
 
+    //GET /api/users/:user_id/items -------------------------------
     describe(`GET /api/users/:user_id/items`, () => {
         context(`Given no users`, () => {
           it(`responds with 404`, () => {
