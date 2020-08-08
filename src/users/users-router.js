@@ -11,6 +11,7 @@ const { requireAuth } = require('../middleware/basic-auth')
 usersRouter
     .route('/')
     .get((req, res, next) => {
+        console.log('/api/users/ endpoint in user-router')
         UsersService.getAllUsers(
             req.app.get('db')
         )
