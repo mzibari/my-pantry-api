@@ -132,7 +132,29 @@ usersRouter
                 res.status(204)
                     .location(path.posix.join(req.originalUrl + `/${item.id}`))
                     .json(item)
-                    .end()
+            })
+            .catch(next)
+    })
+    .patch(jsonParser, (req, res, next) => {
+        const { item_name, quantity, item_type, expiration } = req.body
+        const itemToUpdate = { item_name, quantity, item_type, expiration }
+        const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length
+        if (numberOfValues === 0) {
+            return res.status(400).json({
+                error: {
+                    message: `Request body must contain either item_name, quantity, item_type or expiration`
+                }
+            })
+        }
+        UsersService.updateItem(
+            req.app.get('db'),
+            req.params.item_id,
+            itemToUpdate
+        )
+            .then(item => {
+                res.status(204)
+                    .location(path.posix.join(req.originalUrl + `/${item.id}`))
+                    .json(item)
             })
             .catch(next)
     })

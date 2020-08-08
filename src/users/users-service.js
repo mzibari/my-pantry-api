@@ -16,6 +16,10 @@ const UsersService = {
         return knex('items')
             .where({ id })
             .delete()
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
     },
     addUser(knex, newUser) {
         return knex
@@ -63,6 +67,15 @@ const UsersService = {
             .join('users', 'items.usrid', '=', 'users.id')
             .where('users.id', usrId)
             .andWhere('items.id', id)
+    },
+    updateItem(knex, id, newItemFields) {
+        return knex('items')
+            .where({ id })
+            .update(newItemFields)
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
     },
 
 }
