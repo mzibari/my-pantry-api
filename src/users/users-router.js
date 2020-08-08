@@ -49,12 +49,10 @@ usersRouter
 //GET/users/user_id endpoint, get user
 usersRouter
     .route('/:user_id')
-    /* .all(requireAuth) */
     .all(checkUserExists)
     .get((req, res) => {
         res.json(res.user)
     })
-
     //DELETE/users/user_id endpoint, delete user
     .delete((req, res, next) => {
         UsersService.deleteUser(
@@ -67,11 +65,11 @@ usersRouter
             .catch(next)
     })
 
+
 //GET/users/user_id/items endpoint, get all items for user
 usersRouter
     .route('/:user_id/items')
     .all(checkUserExists)
-    /* .all(requireAuth) */
     .get((req, res, next) => {
         UsersService.getItemsPerUser(
             req.app.get('db'),
@@ -92,7 +90,6 @@ usersRouter
             })
         }
         const usrid = req.params.user_id
-        console.log(usrid)
         const itemToAdd = {
             usrid,
             item_name,
@@ -108,6 +105,34 @@ usersRouter
                 res.status(201)
                     .location(path.posix.join(req.originalUrl + `/${item.id}`))
                     .json(item)
+            })
+            .catch(next)
+    })
+
+usersRouter
+    .route('/:user_id/items/:item_id')
+    .all(checkUserExists)
+    .get((req, res, next) => {
+        UsersService.getItemById(
+            req.app.get('db'),
+            req.params.item_id,
+            req.params.user_id,
+        )
+            .then(item => {
+                res.json(item)
+            })
+            .catch(next)
+    })
+    .delete((req, res, next) => {
+        UsersService.deleteItem(
+            req.app.get('db'),
+            req.params.item_id
+        )
+            .then(item => {
+                res.status(204)
+                    .location(path.posix.join(req.originalUrl + `/${item.id}`))
+                    .json(item)
+                    .end()
             })
             .catch(next)
     })

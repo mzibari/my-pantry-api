@@ -12,6 +12,11 @@ const UsersService = {
             .where({ id })
             .delete()
     },
+    deleteItem(knex, id) {
+        return knex('items')
+            .where({ id })
+            .delete()
+    },
     addUser(knex, newUser) {
         return knex
             .insert(newUser)
@@ -43,6 +48,21 @@ const UsersService = {
             .join('item_type', 'items.item_type', '=', 'item_type.id')
             .join('users', 'items.usrid', '=', 'users.id')
             .where('users.id', id)
+    },
+    getItemById(knex, id, usrId) {
+        return knex
+            .from('items')
+            .select(
+                'items.id AS id',
+                'items.item_name',
+                'quantity',
+                'item_type.item_name AS type',
+                'expiration',
+            )
+            .join('item_type', 'items.item_type', '=', 'item_type.id')
+            .join('users', 'items.usrid', '=', 'users.id')
+            .where('users.id', usrId)
+            .andWhere('items.id', id)
     },
 
 }

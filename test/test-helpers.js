@@ -98,6 +98,7 @@ function cleanTables(db) {
     )
 }
 
+
 function seedMyPantryTables(db, users, itemType, items) {
     return db
         .into('users')

@@ -3,6 +3,12 @@ const app = require('../src/app')
 const helpers = require('./test-helpers')
 const supertest = require('supertest')
 
+
+function makeAuthHeader() {
+    const token = Buffer.from(`username:password`).toString('base64')
+    return `Basic ${token}`
+}
+
 describe('Users Endpoints', function () {
     let db
 
@@ -26,6 +32,7 @@ describe('Users Endpoints', function () {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/users')
+                    
                     .expect(200, [])
             })
         })
