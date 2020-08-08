@@ -19,7 +19,7 @@ usersRouter
                 res.json(users)
             })
             .catch(next)
-    })
+    })/* 
     //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
         const { username, email, user_password } = req.body
@@ -178,7 +178,7 @@ async function checkUserExists(req, res, next) {
     } catch (error) {
         next(error)
     }
-}
+} */
 
 
 module.exports = usersRouter
