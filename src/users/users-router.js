@@ -2,9 +2,7 @@ const express = require('express')
 const UsersService = require('./users-service')
 const usersRouter = express.Router()
 const jsonParser = express.json()
-const xss = require('xss')
 const path = require('path')
-const { requireAuth } = require('../middleware/basic-auth')
 
 
 //GET/users endpoint, get all users
@@ -50,7 +48,7 @@ usersRouter
 //GET/users/user_id endpoint, get user
 usersRouter
     .route('/:user_id')
-    .all(checkUserExists)
+    /* .all(checkUserExists) */
     .get((req, res) => {
         res.json(res.user)
     })
@@ -70,7 +68,7 @@ usersRouter
 //GET/users/user_id/items endpoint, get all items for user
 usersRouter
     .route('/:user_id/items')
-    .all(checkUserExists)
+    /* .all(checkUserExists) */
     .get((req, res, next) => {
         UsersService.getItemsPerUser(
             req.app.get('db'),
@@ -112,7 +110,7 @@ usersRouter
 
 usersRouter
     .route('/:user_id/items/:item_id')
-    .all(checkUserExists)
+    /* .all(checkUserExists) */
     .get((req, res, next) => {
         UsersService.getItemById(
             req.app.get('db'),
@@ -161,7 +159,7 @@ usersRouter
     })
 
 
-async function checkUserExists(req, res, next) {
+/* async function checkUserExists(req, res, next) {
     try {
         const user = await UsersService.getById(
             req.app.get('db'),
@@ -179,6 +177,6 @@ async function checkUserExists(req, res, next) {
         next(error)
     }
 }
-
+ */
 
 module.exports = usersRouter
