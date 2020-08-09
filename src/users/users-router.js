@@ -24,6 +24,7 @@ usersRouter
             .then(users => {
                 res.json(users)
             })
+            .catch(next)
     }) 
     /* //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
