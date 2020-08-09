@@ -5,7 +5,7 @@ const jsonParser = express.json()
 const xss = require('xss')
 const path = require('path')
 const { requireAuth } = require('../middleware/basic-auth')
-const { PORT, DATABASE_URL } = require('./config')
+const { PORT, DATABASE_URL } = require('../config')
 const knex = require('knex')
 
 const db = knex({
