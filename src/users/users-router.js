@@ -18,11 +18,12 @@ usersRouter
     .route('/')
     .get((req, res, next) => {
         console.log('/api/users/ endpoint in user-router')
-        db.select('*').from('users')
+        UsersService.getAllUsers(
+            req.app.get('db')
+        )
             .then(users => {
                 res.json(users)
             })
-            .catch(next)
     }) 
     /* //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
