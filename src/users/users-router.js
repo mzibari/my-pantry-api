@@ -18,15 +18,13 @@ usersRouter
     .route('/')
     .get((req, res, next) => {
         console.log('/api/users/ endpoint in user-router')
-        UsersService.getAllUsers(
-            /* req.app.get('db') */db
-        )
+        db.select('*').from('users')
             .then(users => {
                 res.json(users)
             })
             .catch(next)
     }) 
-    //POST/users endpoint, new user
+    /* //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
         const { username, email, user_password } = req.body
         if (!username || !email || !user_password) {
@@ -42,7 +40,7 @@ usersRouter
             user_password,
         }
         UsersService.addUser(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             userToAdd
         )
             .then(user => {
@@ -63,7 +61,7 @@ usersRouter
     //DELETE/users/user_id endpoint, delete user
     .delete((req, res, next) => {
         UsersService.deleteUser(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.user_id
         )
             .then(() => {
@@ -79,7 +77,7 @@ usersRouter
     .all(checkUserExists)
     .get((req, res, next) => {
         UsersService.getItemsPerUser(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.user_id
         )
             .then(items => {
@@ -105,7 +103,7 @@ usersRouter
             expiration
         }
         UsersService.addItem(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             itemToAdd
         )
             .then(item => {
@@ -121,7 +119,7 @@ usersRouter
     .all(checkUserExists)
     .get((req, res, next) => {
         UsersService.getItemById(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.item_id,
             req.params.user_id,
         )
@@ -132,7 +130,7 @@ usersRouter
     })
     .delete((req, res, next) => {
         UsersService.deleteItem(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.item_id
         )
             .then(item => {
@@ -154,7 +152,7 @@ usersRouter
             })
         }
         UsersService.updateItem(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.item_id,
             itemToUpdate
         )
@@ -170,7 +168,7 @@ usersRouter
 async function checkUserExists(req, res, next) {
     try {
         const user = await UsersService.getById(
-            /* req.app.get('db') */db,
+            req.app.get('db'),
             req.params.user_id
         )
 
@@ -184,7 +182,7 @@ async function checkUserExists(req, res, next) {
     } catch (error) {
         next(error)
     }
-} 
+}  */
 
 
 module.exports = usersRouter
