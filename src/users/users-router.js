@@ -9,7 +9,6 @@ const path = require('path')
 usersRouter
     .route('/')
     .get((req, res, next) => {
-        console.log('/api/users/ endpoint in user-router')
         UsersService.getAllUsers(
             req.app.get('db')
         )
@@ -48,7 +47,7 @@ usersRouter
 //GET/users/user_id endpoint, get user
 usersRouter
     .route('/:user_id')
-    /* .all(checkUserExists) */
+    .all(checkUserExists)
     .get((req, res) => {
         res.json(res.user)
     })
@@ -68,7 +67,7 @@ usersRouter
 //GET/users/user_id/items endpoint, get all items for user
 usersRouter
     .route('/:user_id/items')
-    /* .all(checkUserExists) */
+    .all(checkUserExists)
     .get((req, res, next) => {
         UsersService.getItemsPerUser(
             req.app.get('db'),
@@ -110,7 +109,7 @@ usersRouter
 
 usersRouter
     .route('/:user_id/items/:item_id')
-    /* .all(checkUserExists) */
+    .all(checkUserExists)
     .get((req, res, next) => {
         UsersService.getItemById(
             req.app.get('db'),
@@ -159,7 +158,7 @@ usersRouter
     })
 
 
-/* async function checkUserExists(req, res, next) {
+async function checkUserExists(req, res, next) {
     try {
         const user = await UsersService.getById(
             req.app.get('db'),
@@ -177,6 +176,6 @@ usersRouter
         next(error)
     }
 }
- */
+
 
 module.exports = usersRouter
