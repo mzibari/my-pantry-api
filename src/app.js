@@ -16,9 +16,9 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 console.log('app console log just before app.use')
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
     res.send('Hello, boilerplate!')
-})
+}) */
 app.use('/api/users', usersRouter)
 
 app.use(function errorHandler(error, req, res, next) {
