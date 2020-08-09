@@ -5,13 +5,7 @@ const jsonParser = express.json()
 const xss = require('xss')
 const path = require('path')
 const { requireAuth } = require('../middleware/basic-auth')
-const { PORT, DATABASE_URL } = require('../config')
-const knex = require('knex')
 
-const db = knex({
-  client: 'pg',
-  connection: DATABASE_URL,
-})
 
 //GET/users endpoint, get all users
 usersRouter
@@ -25,8 +19,8 @@ usersRouter
                 res.json(users)
             })
             .catch(next)
-    }) 
-    /* //POST/users endpoint, new user
+    })
+    //POST/users endpoint, new user
     .post(jsonParser, (req, res, next) => {
         const { username, email, user_password } = req.body
         if (!username || !email || !user_password) {
@@ -184,7 +178,7 @@ async function checkUserExists(req, res, next) {
     } catch (error) {
         next(error)
     }
-}  */
+}
 
 
 module.exports = usersRouter
