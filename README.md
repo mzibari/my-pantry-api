@@ -1,26 +1,115 @@
-# Express Boilerplate!
+# MyPantry API
 
-This is a boilerplate project used for starting new projects!
+## API Reference 
+My Pantry API is organized around **REST**. It accepts **form encoded** request bodies, returns **JSON encoded** responses.
 
-## Set up
+It does not use authentication.
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## Endpoints
+[https://thawing-cove-31539.herokuapp.com/api/](https://thawing-cove-31539.herokuapp.com/api/)       
+The API is built primarily around the user, most endpoints starts with ```/users```
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME` 
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init` 
-4. Install the node dependencies `npm install` 
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env` 
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",` 
+***
+### ```1./users``` : 
+Returns a JSON object of all users  
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"username":"mahmood",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"email":"mahmood@email.com",```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"user_password":"password1"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```},```   
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"username":"mahmood2",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"email":"mahmood2@email.com",```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"user_password":"password2"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```}```  
+```]```
 
-## Scripts
+***
+### ```2./users/:user_id```
+Returns a JSON object with the requested user_id   
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"username":"mahmood",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"email":"mahmood@email.com",```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"user_password":"password1"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```}```  
+```]```  <br> <br> 
+When the user_id doesn't exist, it returns an error  
+```{"error":"User doesn't exist"}```
+***
 
-Start the application `npm start` 
+### ```3./users/user_id/items```
+Returns a JSON object containing all the items belonging to the user with the specified user_id    
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```""id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"Crab",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"quantity":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"type":"Produce"```     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"expiration":"mar-15-2020"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```},```   
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":2```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"kale",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"quantity",```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"type":"Canned Goods"```     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"expiration":"jul-20-2020"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```}```  
+```]``` <br><br>
 
-Start nodemon for the application `npm run dev` 
+When the user_id doesn't exist, it returns an error  
+```{"error":"User doesn't exist"}```
+***
 
-Run the tests `npm test` 
+### ```4./users/user_id/items/item_id```
+Returns a JSON object containing the specified item belonging to the user with the specified user_id  
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```""id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"Crab",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"quantity":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"type":"Produce"```     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"expiration":"mar-15-2020"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```},```   
+```]``` <br><br>
+***
 
-## Deploying
+### ```5./items```
+Returns every item in the database  
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```""id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"Crab",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"quantity":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"type":"Produce"```     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"expiration":"mar-15-2020"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```},```   
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":2```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"kale",```   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"quantity",```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"type":"Canned Goods"```     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"expiration":"jul-20-2020"```     
+&nbsp;&nbsp;&nbsp;&nbsp;```}```  
+```]``` <br><br>
+***
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create` . This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+### ```/itemtypes```
+Returns every item type in the database
+
+```[```  
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```""id":1,```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"Produce",```   
+     
+&nbsp;&nbsp;&nbsp;&nbsp;```},```   
+&nbsp;&nbsp;&nbsp;&nbsp;```{```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"id":2```  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```"item_name":"Frozen",```   
+   
+&nbsp;&nbsp;&nbsp;&nbsp;```}```  
+```]``` <br><br>

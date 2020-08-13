@@ -20,7 +20,7 @@ app.use(cors())
 
 app.use('/api/users', usersRouter)
 app.use('/api/items', itemsRouter)
-app.use('/api/itemType', itemTypeRouter)
+app.use('/api/itemTypes', itemTypeRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
