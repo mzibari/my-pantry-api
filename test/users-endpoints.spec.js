@@ -118,7 +118,7 @@ describe('Users Endpoints', function () {
             })
         })
     })
-
+    //POST /api/users ------------------------------------------
     describe(`POST /api/users/`, () => {
         it(`creates a user, responding with 201 and the new user`, function () {
             const newUser = {
@@ -145,6 +145,7 @@ describe('Users Endpoints', function () {
         })
 
     })
+    //POST /api/users/:user_id/items -------------------------
     describe(`POST /api/users/:user_id/items`, () => {
         it(`creates an item, responding with 201 and the new item`, function () {
             this.retries(3)
@@ -183,6 +184,7 @@ describe('Users Endpoints', function () {
 
     })
 
+    //DELETE /api/users/:user_id -----------------------------------
     describe(`DELETE /api/users/:user_id`, () => {
         context('Given there are users in the database', () => {
             const testUsers = helpers.makeUsersArray()

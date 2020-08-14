@@ -5,7 +5,7 @@ const jsonParser = express.json()
 const path = require('path')
 
 
-//GET/users endpoint, get all users
+// GET /users endpoint, get all users
 usersRouter
     .route('/')
     .get((req, res, next) => {
@@ -17,7 +17,7 @@ usersRouter
             })
             .catch(next)
     })
-    //POST/users endpoint, new user
+    // POST /users endpoint, new user
     .post(jsonParser, (req, res, next) => {
         const { username, email, user_password } = req.body
         if (!username || !email || !user_password) {
@@ -44,14 +44,14 @@ usersRouter
             .catch(next)
     })
 
-//GET/users/user_id endpoint, get user
+// GET /users/user_id endpoint, get user
 usersRouter
     .route('/:user_id')
     .all(checkUserExists)
     .get((req, res) => {
         res.json(res.user)
     })
-    //DELETE/users/user_id endpoint, delete user
+    // DELETE /users/user_id endpoint, delete user
     .delete((req, res, next) => {
         UsersService.deleteUser(
             req.app.get('db'),
@@ -64,7 +64,7 @@ usersRouter
     })
 
 
-//GET/users/user_id/items endpoint, get all items for user
+// GET /users/user_id/items endpoint, get all items for user
 usersRouter
     .route('/:user_id/items')
     .all(checkUserExists)
@@ -78,6 +78,7 @@ usersRouter
             })
             .catch(next)
     })
+    // POST /users/user_id/items endpoint, post a new item for user
     .post(jsonParser, (req, res, next) => {
         const { item_name, quantity, item_type, expiration } = req.body
         if (!item_name || !quantity || !item_type || !expiration) {
@@ -107,6 +108,7 @@ usersRouter
             .catch(next)
     })
 
+    // GET /:user_id/items/:item_id endpoint, get specific item for specific user based on id's
 usersRouter
     .route('/:user_id/items/:item_id')
     .all(checkUserExists)
@@ -121,6 +123,7 @@ usersRouter
             })
             .catch(next)
     })
+    // DELETE /:user_id/items/:item_id endpoint, delete specific item for specific user based on id's
     .delete((req, res, next) => {
         UsersService.deleteItem(
             req.app.get('db'),
@@ -133,6 +136,7 @@ usersRouter
             })
             .catch(next)
     })
+    // PATCH /:user_id/items/:item_id endpoint, patch specific item for specific user based on id's
     .patch(jsonParser, (req, res, next) => {
         const { item_name, quantity, item_type, expiration } = req.body
         const itemToUpdate = { item_name, quantity, item_type, expiration }
