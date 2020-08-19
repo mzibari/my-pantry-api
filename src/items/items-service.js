@@ -7,6 +7,7 @@ const ItemsService = {
             'quantity',
             'item_type.item_name AS type',
             'expiration',
+            'usrid',
         )
         .from('items')
         .join('item_type', 'items.item_type', '=', 'item_type.id')
