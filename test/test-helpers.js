@@ -114,7 +114,21 @@ function seedMyPantryTables(db, users, itemType, items) {
                 .insert(items)
         )
 }
-
+//Makes all items in the server
+function makeAllExpectedItems(users, types, items) {
+    return items.map(item => {
+        const itemType = types.find(type => type.id === item.item_type)
+        return {
+            id: item.id,
+            item_name: item.item_name,
+            type: itemType.item_name,
+            expiration: item.expiration,
+            quantity: item.quantity,
+            usrid: item.usrid,
+        }
+    })
+}
+//Makes all items to a specific user
 function makeExpectedItems(users, types, userId, items) {
     const expectedItems = items
         .filter(item => item.usrid === userId)
@@ -138,6 +152,7 @@ module.exports = {
     makeItemTypeArray,
     makeItemsArray,
 
+    makeAllExpectedItems,
     makeExpectedItems,
     makeMyPantryFixtures,
     cleanTables,
